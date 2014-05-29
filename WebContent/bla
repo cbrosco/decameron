@@ -1,0 +1,48 @@
+       var myLatlng1 = new google.maps.LatLng(-25.363882,131.044922);
+        var marker = new google.maps.Marker({
+      	    position: myLatlng1,
+      	    map: map,
+      	    title:"Five"
+      	});
+        var myLatlng2 = new google.maps.LatLng(37.772323, -122.214897);
+        var marker = new google.maps.Marker({
+      	    position: myLatlng2,
+      	    map: map,
+      	    title:"One"
+      	});
+        var myLatlng3 = new google.maps.LatLng(21.291982, -157.821856);
+        var marker = new google.maps.Marker({
+      	    position: myLatlng3,
+      	    map: map,
+      	    title:"Two"
+      	});
+        var myLatlng4 = new google.maps.LatLng(-18.142599, 178.431);
+        var marker = new google.maps.Marker({
+      	    position: myLatlng4,
+      	    map: map,
+      	    title:"Three"
+      	});
+        var myLatlng5 = new google.maps.LatLng(-27.46758, 153.027892);
+        var marker = new google.maps.Marker({
+      	    position: myLatlng5,
+      	    map: map,
+      	    title:"Four"
+      	});
+      	      var latitude= parseFloat(<%=loc.getLat()%>);
+        var longitude= parseFloat(<%=loc.getLong()%>);
+      	
+      	 var myLatlng = new google.maps.LatLng(latitude,longitude);
+        	 var marker = new google.maps.Marker({
+           	    position: myLatlng,
+           	    map: map,
+           	    title:locationName
+           	});
+           	
+           	
+           	
+           	<% if(st != null){ %>
+Giorno <%=st.getGiorno() %> Story <%=st.getNumber()%> <br> 
+Storyteller: <%=st.getStoryteller()%><br>
+Regina : <%=st.getRegina() %><br>
+Extra Info : <%=st.getExtraInfo() %>
+<%} %>

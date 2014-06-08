@@ -138,4 +138,27 @@ public class Story {
 		this.info= updatedVersion;
 		
 	}
+/**
+ *  Searched the db for stories that match the search term based on the criterion
+ * @param searchTerm user entered word. See if any values in db are like this word
+ * @param criterion the field to search. can be "giorno", "teller" or "location"
+ * @return an ArrayList of the unique ids for all storied matching the criteria
+ */
+	public static ArrayList<Integer> getMaps(String searchTerm, String criterion) {
+		ArrayList<Integer> result= new ArrayList<Integer>();
+		// TODO Auto-generated method stub
+		//search db based on search term
+		//return story ids that match search
+		return result;
+	}
+	
+	/**
+	 * Find the location in this story that matches the term
+	 * Uh oh what if multiple stories match? May need different plan
+	 * @param term
+	 * @return
+	 */
+	public String getSimilarLocation(String term){
+		return "";
+	}
 }

@@ -83,7 +83,7 @@ public class Story {
 	public boolean addStoryToDB(){
 		//add something to RAHUL db
 		
-		return false;
+		return true;
 	}
 	
 	public int getNumber(){

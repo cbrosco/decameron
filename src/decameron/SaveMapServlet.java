@@ -39,10 +39,16 @@ public class SaveMapServlet extends HttpServlet {
 		HttpSession session = request.getSession(true);
 		Story st= (Story)session.getAttribute("story");
 		st.updateExtraInfo(request.getParameter("extra"));
-		st.addStoryToDB();
-		//SHOULD GIVE INDICATION OF SUCCESSFUL SAVING AND SHOW STORY
-		RequestDispatcher dispatch = request.getRequestDispatcher("index.jsp");
+		boolean saved= st.addStoryToDB();
+		
+		if(saved){
+		RequestDispatcher dispatch = request.getRequestDispatcher("saveSuccessful.jsp");
 		dispatch.forward(request, response);
+		} else{
+			session.setAttribute("story", null);
+			RequestDispatcher dispatch = request.getRequestDispatcher("saveFailed.jsp");
+			dispatch.forward(request, response);
+		}
 		
 	}
 

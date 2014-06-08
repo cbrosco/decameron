@@ -21,8 +21,8 @@ p.descrip {
 <br>
 <p class="descrip" >
 	GeoDecameron is a website that allows academics to visualize the geographical movement 
-	of the characters in the tales of the Bocaccio's Decameron. You can explore the geographic 
-	reach of the Decameron. To what extent was Bocaccio a European thinker?
+	of the characters in the tales of the Boccaccio's Decameron. You can explore the geographic 
+	reach of the Decameron. To what extent was Boccaccio a European thinker?
 	What was Italys relation to Europe in his eyes? 
 	
 	</p>

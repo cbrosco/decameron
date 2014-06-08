@@ -161,4 +161,9 @@ public class Story {
 	public String getSimilarLocation(String term){
 		return "";
 	}
+
+	public int getID() {
+
+		return this.id;
+	}
 }

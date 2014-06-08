@@ -28,17 +28,15 @@ Search for <%=request.getParameter("searchTerm")%> as a <%=searchType%>
 
 <%for(int i=0; i<storyIds.size(); i++) {
 	Story s= new Story(storyIds.get(i));
-	if(request.getParameter("searchType").equals("giorno")){
+	String link= "mapAndInfo.jsp?storyID=" +storyIds.get(i);
+	if(searchType.equals("Location")){
+		String location= s.getSimilarLocation(request.getParameter("searchTerm"));
 %>
-<a href="mapAndInfo">Day <%=s.getGiorno()%> Story <%=s.getNumber()%> </a>
+<a href=<%=link %>>Day <%=s.getGiorno()%> Story <%=s.getNumber()%> Location <%=location%> </a>
 
-<% }else if(request.getParameter("searchType").equals("teller")){%>
-<a href="mapAndInfo">Day <%=s.getGiorno()%> Story <%=s.getNumber()%> StoryTeller <%=s.getStoryteller() %> </a>
+<% }else{%>
+<a href=<%=link %>>Day <%=s.getGiorno()%> Story <%=s.getNumber()%> StoryTeller <%=s.getStoryteller() %> </a>
 
-<%} else { 
-		String location= s.getSimilarLocation(request.getParameter("searchTerm"));%>
-
-<a href="mapAndInfo">Day <%=s.getGiorno()%> Story <%=s.getNumber()%> Location <%=location%> </a>
 <%}
 }%>
 

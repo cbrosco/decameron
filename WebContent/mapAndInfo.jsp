@@ -5,7 +5,9 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<%Story st= (Story)session.getAttribute("story"); %>
+
+<% int storyID= Integer.parseInt(request.getParameter("storyID"));
+Story st= new Story(storyID); %>
 
 <title>Day <%=st.getGiorno()%> Story <%=st.getNumber()%> </title>
 <jsp:include page="mapDisplay.jsp"></jsp:include>

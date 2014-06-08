@@ -45,9 +45,7 @@ public class SelectServlet extends HttpServlet {
 			number = Integer.parseInt(request.getParameter("giorno"));
 		}
 		Story st= new Story(giorno, request.getParameter("teller"), number);
-		HttpSession session = request.getSession(true);
-		session.setAttribute("story", st);
-		RequestDispatcher dispatch = request.getRequestDispatcher("mapAndInfo.jsp");
+		RequestDispatcher dispatch = request.getRequestDispatcher("mapAndInfo.jsp?storyID=" +st.getID());
 		dispatch.forward(request, response);
 	}
 

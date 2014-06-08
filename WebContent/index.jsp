@@ -16,9 +16,8 @@ p.descrip {
 
 <jsp:include page="toolbar.jsp"></jsp:include>
 
-<h1>Home</h1>
-<br>
-<br>
+<h1>GeoDecameron</h1>
+
 <p class="descrip" >
 	GeoDecameron is a website that allows academics to visualize the geographical movement 
 	of the characters in the tales of the Boccaccio's Decameron. You can explore the geographic 

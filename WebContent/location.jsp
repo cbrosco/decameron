@@ -8,7 +8,7 @@
 <title>Select Locations</title>
 </head>
 <body>
-
+<jsp:include page="toolbar.jsp"></jsp:include>
 <%Story st= (Story)session.getAttribute("story"); %>
 Select the next Location for the story from <%=st.getStoryteller() %> on Giorno <%=st.getGiorno() %>
 

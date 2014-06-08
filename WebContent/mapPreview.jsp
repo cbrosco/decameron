@@ -7,6 +7,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Map Preview</title>
+
 <style type="text/css">
       html { height: 100% }
       body { height: 100%; margin: 20; padding: 0 }
@@ -95,16 +96,18 @@
 
 </head>
 <body>
-
+<jsp:include page="toolbar.jsp"></jsp:include>
 Day <%=st.getGiorno() %> Story <%=st.getNumber()%> <br> 
 Storyteller: <%=st.getStoryteller()%><br>
 Ruler: <%=st.getRegina() %><br>
-<textarea rows="2" cols="50" name="extra">
-Extra Info : <%=st.getExtraInfo() %>
+
+Extra Info :
+<textarea rows="2" cols="50" name="extra" form ="saving">
+ <%=st.getExtraInfo() %>
 </textarea>
+<form action="ChangeLocationsServlet" method="post">
 <div id="locationNames">
 Locations: <br>
-<form action="ChangeLocationsServlet" method="post">
 <%
 for(int i=0; i < numLocs; i++ ){ %>
 <%=i+1%>: <input type="text" name="name<%=i%>" value=<%=locs.get(i).getName()%>> Latitude:<input type="text" name="lat<%=i%>" value=<%=locs.get(i).getLat()%>> Longitude: <input type="text" name="lon<%=i%>" value=<%=locs.get(i).getLong()%>> <br>
@@ -116,7 +119,7 @@ for(int i=0; i < numLocs; i++ ){ %>
 </div>
 
 
-<form action="SaveMapServlet" method="post">
+<form action="SaveMapServlet" id= "saving" method="post">
 <input type="submit" value="Save Map">
 </form>
 </body>

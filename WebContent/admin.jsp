@@ -7,6 +7,7 @@
 <title>Administration</title>
 </head>
 <body>
+<jsp:include page="toolbar.jsp"></jsp:include>
 <h1>Admin</h1>
 Enter data for a new map:
 <br>

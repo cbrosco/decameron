@@ -1,11 +1,14 @@
 package decameron;
 
 import java.io.IOException;
+
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  * Servlet implementation class SaveMapServlet
@@ -33,9 +36,14 @@ public class SaveMapServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		//save all map info in db
-		//forward to home? admin?
+		HttpSession session = request.getSession(true);
+		Story st= (Story)session.getAttribute("story");
+		st.updateExtraInfo(request.getParameter("extra"));
+		st.addStoryToDB();
+		//SHOULD GIVE INDICATION OF SUCCESSFUL SAVING AND SHOW STORY
+		RequestDispatcher dispatch = request.getRequestDispatcher("index.jsp");
+		dispatch.forward(request, response);
+		
 	}
 
 }

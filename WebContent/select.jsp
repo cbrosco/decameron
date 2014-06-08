@@ -89,7 +89,7 @@
             strokeOpacity: 1.0,
             strokeWeight: 2
           });
-		<% if(!st.isMulipleStoriesCombined()) {%>
+		<% if(st != null && !st.isMulipleStoriesCombined()) {%>
           flightPath.setMap(map);
           <% } %>
       }
@@ -99,6 +99,8 @@
 
 </head>
 <body>
+<jsp:include page="toolbar.jsp"></jsp:include>
+<h1> Select</h1>
 <form action="SelectServlet" method="post">
 Day:
 <select name="giorno">
@@ -127,13 +129,31 @@ Story teller:
 <option value="Lauretta">Lauretta</option>
 <option value="Emilia">Emilia</option>
 <option value="Panfilo">Panfilo</option>
+<option value="N/A">N/A</option>
+</select>
+Story Number:
+<select name="number">
+<option value="N/A" selected>N/A</option>
+<option value="all">all</option>
+<option value="1">1</option>
+<option value="2">2</option>
+<option value="3" >3</option>
+<option value="4">4</option>
+<option value="5">5</option>
+<option value="6">6</option>
+<option value="7">7</option>
+<option value="8">8</option>
+<option value="9">9</option>
+<option value="10" selected>10</option>
 </select>
 <input type="submit" value="Select">
 </form>
 
 
 <% if(st != null){ %>
-
+Day: <%=st.getGiorno()%> Storyteller: <%=st.getStoryteller() %> Number<%=st.getNumber()%> <br>
+Ruler: <%=st.getRegina() %><br>
+Extra Info: <%=st.getExtraInfo() %>
 <%} %>
 <div id="map-canvas">
 </div>

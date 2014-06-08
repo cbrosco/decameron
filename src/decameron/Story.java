@@ -12,10 +12,12 @@ public class Story {
 	private ArrayList<Location> coords;
 	private boolean isMultiple;				//if this represents locations for multiple stories or just one story
 	
+	public static final int NA = 20;
+	public static final int ALL = -1;
 	
 	/*
 	 * Constructor based on user entering information, does not put in DB yet
-	 * Still to be done: add locations for story
+	 * Still to be done: add locations for story, add story to DB
 	 */
 	public Story(int storyNumber, int giorno, String storyteller, String info) {
 		number= storyNumber;
@@ -28,23 +30,40 @@ public class Story {
 	}
 	
 	/*
-	 * Constructor that gets story from DB
+	 * Constructor that gets story from DB by unique id
 	 */
 	public Story(int id){
 		this.id= id;
 		isMultiple= false;
+		coords= new ArrayList<Location>();
 		//get from DB dont forget locations (can call add Location)
 	}
 	
 	/*
-	 * Constructor that gets story from DB by giorno and teller
-	 * either can be the option "all"(for giorno, -1 means all)
+	 * Constructor that gets story from DB by giorno and teller/number
+	 * either can be the option "all"(for int values, -1 means all)
+	 * teller or number may be "N/A"
 	 */
-	public Story(int giorno, String teller){
+	public Story(int giorno, String teller, int number){
 		this.storyteller= teller;
 		this.giorno= giorno;
+		this.number= number;
 		isMultiple= false;
-		if(giorno == -1 || teller.equals("all")) isMultiple= true;
+		String query= "";
+		if(teller.equals("all") || teller.equals("N/A")){
+			if(number == NA || number == ALL){
+				isMultiple= true;
+				query= "Select * from Stories where giorno=" + number + ";";
+			}	
+		}
+		if(giorno == -1) {
+			if(isMultiple){
+				query= "Select * from Stories;";
+			}
+			isMultiple = true;
+			
+		}
+		coords= new ArrayList<Location>();
 		//get from DB dont forget locations (can call add Location)
 	}
 	
@@ -55,6 +74,16 @@ public class Story {
 	public void addLocation(double lat, double lon, String name){
 		Location l= new Location(name, lon, lat);
 		coords.add(l);
+	}
+	
+	/**
+	 * Puts story and locations in DB
+	 * @return true if story successfully added, otherwise false
+	 */
+	public boolean addStoryToDB(){
+		//add something to RAHUL db
+		
+		return false;
 	}
 	
 	public int getNumber(){
@@ -103,5 +132,10 @@ public class Story {
 			case 10: return "Panfilo";
 		}
 		return "";
+	}
+
+	public void updateExtraInfo(String updatedVersion) {
+		this.info= updatedVersion;
+		
 	}
 }

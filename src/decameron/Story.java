@@ -40,7 +40,23 @@ public class Story {
 		this.id= id;
 		isMultiple= false;
 		coords= new ArrayList<Location>();
-		//get from DB dont forget locations (can call add Location)
+		String query= "Select * from Stories where storyID=" + id + ";";
+		System.out.println(query);
+		Statement st= MyDBAccess.getStatement();
+		try{
+			ResultSet rs= st.executeQuery(query);
+			if(rs.next()){
+				this.giorno= rs.getInt("giorno");
+				this.number= rs.getInt("storyNumber");
+				this.storyteller= rs.getString("storyteller");
+				this.regina= rs.getString("regina");
+				this.info= rs.getString("extraInfo");
+			}
+			
+		}catch(SQLException e){
+			
+		}
+	
 		getLocationsFromDB();
 	}
 	
@@ -80,16 +96,27 @@ public class Story {
 	 * NB Uses the id property of story to find the locations for the story
 	 */
 	private void getLocationsFromDB(){
-		String query= "Select * from Locations where storyID=" + this.id + "order by indx;";
+		String query= "Select * from Locations where storyID=" + this.id + " order by indx;";
+		System.out.println(query);
 		Statement st= MyDBAccess.getStatement();
+		ArrayList<Integer> locationIds= new ArrayList<Integer>();
 		try {
 			ResultSet rs= st.executeQuery(query);
 			while(rs.next()){
-				
+				int locationID= rs.getInt("locationID");
+				locationIds.add(locationID);
+			}
+			for(int i=0; i< locationIds.size(); i++){
+				Location l= new Location(locationIds.get(i));
+				coords.add(l);
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+		
+		for(int i=0; i< coords.size(); i++){
+			System.out.println(coords.get(i));
 		}
 		
 	}
@@ -109,7 +136,6 @@ public class Story {
 	 */
 	public boolean addStoryToDB(){
 		String query= "Insert into Stories values(null, " + giorno + ", " + number + ", \"" + storyteller + "\", \"" + regina + "\", \"" + info + "\");";
-		System.out.println(query);
 		Statement st= MyDBAccess.getStatement();
 		this.id= -1;
 		try{
@@ -130,10 +156,9 @@ public class Story {
 		for(int i=0; i < coords.size(); i++){
 			Location l= coords.get(i);
 			query= "Insert into Points values(null, \"" + l.getName() + "\", "+ l.getLong() + ", " + l.getLat() + ");";
-			System.out.println(query);
 			try{
 				st.executeUpdate(query);
-				String query2= "Insert into Locations values(" + this.id + ", LAST_INSERT_ID(), " + i+1 + ");";
+				String query2= "Insert into Locations values(" + this.id + ", LAST_INSERT_ID(), " + (i+1) + ");";
 				st.executeUpdate(query2);
 				System.out.println(query2);
 			}catch(SQLException e){
@@ -207,7 +232,6 @@ public class Story {
 		ArrayList<Integer> result= new ArrayList<Integer>();
 		searchTerm= searchTerm.trim();
 		if(searchTerm.isEmpty()) return result;
-		// TODO Auto-generated method stub
 		String query= "";
 		if(criterion.equals("giorno")){
 			query= findStoriesForDay(searchTerm);
@@ -219,6 +243,16 @@ public class Story {
 			query= "Select storyID from Locations where locationID in (selecct locationID from Points where name like '%" + searchTerm + "%');";
 		}
 		if (query == null) return result;
+		System.out.println(query);
+		Statement st= MyDBAccess.getStatement();
+		try{
+			ResultSet rs= st.executeQuery(query);
+			while(rs.next()){
+				result.add(rs.getInt(1));
+			}
+		}catch (SQLException e){
+			return result;
+		}
 		
 		//search db with query
 		//return story ids that match search
@@ -251,7 +285,7 @@ public class Story {
 		}
 		if(day== -1) return null;
 			
-		return "Select storyID from Stories where girono=" + day + ";"; 
+		return "Select storyID from Stories where giorno=" + day + ";"; 
 
 		}
 

@@ -19,14 +19,15 @@
  <input type="submit" value="Search">
 </form>
 <%ArrayList<Integer> storyIds= (ArrayList<Integer>)session.getAttribute("storyIds"); 
+ int numResults= storyIds.size();
  String searchType= request.getParameter("searchType");
  if(searchType.equals("teller")) searchType= "Story teller";
  if(searchType.equals("giorno")) searchType= "Day";
  if(searchType.equals("location")) searchType= "Location";
 %>
-Search for <%=request.getParameter("searchTerm")%> as a <%=searchType%>
+Search for <%=request.getParameter("searchTerm")%> as a <%=searchType%> produced <%=numResults%> results
 
-<%for(int i=0; i<storyIds.size(); i++) {
+<%for(int i=0; i< storyIds.size(); i++) {
 	Story s= new Story(storyIds.get(i));
 	String link= "mapAndInfo.jsp?storyID=" +storyIds.get(i);
 	if(searchType.equals("Location")){

@@ -1,5 +1,12 @@
 package decameron;
 
+import java.sql.ResultSet;
+import java.util.ArrayList;
+
+import java.sql.SQLException;
+import java.sql.Statement;
+
+
 
 public class Location {
 	@Override
@@ -20,11 +27,19 @@ public class Location {
 	}
 	
 	public Location(int id){
-		//get Location from DB
-		//latit=
-		//longd=
-		//name
 		this.id= id;
+		String query2= "Select * from Points where locationID=" + id + ";";
+		Statement st= MyDBAccess.getStatement();
+		try{
+		ResultSet rs= st.executeQuery(query2);
+		if(rs.next()){
+			this.name= rs.getString("name");
+			this.latit= rs.getDouble("latit");
+			this.longd= rs.getDouble("longd");
+		}
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
 	}
 	
 	public double getLat(){

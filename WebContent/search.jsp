@@ -11,9 +11,9 @@
 <h1>Search</h1>
 <form action="SearchServlet" method="post">
 <input type="text" name="searchTerm">
- <input type="radio" name="searchType" value="giorno"> Day
+ <input type="radio" name="searchType" value="giorno" > Day
  <input type="radio" name="searchType" value="teller"> Storyteller
- <input type="radio" name="searchType" value="location"> Location
+ <input type="radio" name="searchType" value="location" checked> Location
  <input type="submit" value="Search">
 </form>
 

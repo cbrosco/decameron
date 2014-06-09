@@ -45,6 +45,7 @@ public class ChangeLocationsServlet extends HttpServlet {
 			String lat= request.getParameter("lat" + i);
 			String lon= request.getParameter("lon" + i);
 			if(!name.isEmpty() && !lat.isEmpty() && !lon.isEmpty()){
+				System.out.println("ChangeLocationServlet 1"+name);
 				st.addLocation(Double.parseDouble(lat), Double.parseDouble(lon), name);
 			}
 		}

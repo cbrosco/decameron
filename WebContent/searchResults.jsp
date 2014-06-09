@@ -15,7 +15,7 @@
 <input type="text" name="searchTerm">
  <input type="radio" name="searchType" value="giorno"> Day
  <input type="radio" name="searchType" value="teller"> Storyteller
- <input type="radio" name="searchType" value="location"> Location
+ <input type="radio" name="searchType" value="location" checked> Location
  <input type="submit" value="Search">
 </form>
 <%ArrayList<Integer> storyIds= (ArrayList<Integer>)session.getAttribute("storyIds"); 
@@ -25,7 +25,7 @@
  if(searchType.equals("giorno")) searchType= "Day";
  if(searchType.equals("location")) searchType= "Location";
 %>
-Search for <%=request.getParameter("searchTerm")%> as a <%=searchType%> produced <%=numResults%> results
+Search for <%=searchType%> "<%=request.getParameter("searchTerm")%>" produced <%=numResults%> results
 
 <%for(int i=0; i< storyIds.size(); i++) {
 	Story s= new Story(storyIds.get(i));
@@ -33,10 +33,10 @@ Search for <%=request.getParameter("searchTerm")%> as a <%=searchType%> produced
 	if(searchType.equals("Location")){
 		String location= s.getSimilarLocation(request.getParameter("searchTerm"));
 %>
-<a href=<%=link %>>Day <%=s.getGiorno()%> Story <%=s.getNumber()%> Location <%=location%> </a>
+<a class="results" href=<%=link %>>Day <%=s.getGiorno()%> Story <%=s.getNumber()%> Location <%=location%> </a>
 
 <% }else{%>
-<a href=<%=link %>>Day <%=s.getGiorno()%> Story <%=s.getNumber()%> StoryTeller <%=s.getStoryteller() %> </a>
+<a class="results" href=<%=link %>>Day <%=s.getGiorno()%> Story <%=s.getNumber()%> StoryTeller <%=s.getStoryteller() %> </a>
 
 <%}
 }%>

@@ -38,6 +38,12 @@ a:link, a:visited {
 a:hover, a:active {
     background-color: #7A991A;
 }
+
+a.results{
+	border: 5px;
+	border-color: black;
+}
+
 </style>
 
 <ul class="nav navbar-nav">

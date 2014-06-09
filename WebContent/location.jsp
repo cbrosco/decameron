@@ -19,7 +19,7 @@
 	}
 %>
 <%Story st= (Story)session.getAttribute("story"); %>
-Select the next Location for the story from <%=st.getStoryteller() %> on Giorno <%=st.getGiorno() %>
+Enter the Locations for the story from <%=st.getStoryteller() %> on Day <%=st.getGiorno() %>:
 
 <form action="LocationServlet" method="post">
 <%

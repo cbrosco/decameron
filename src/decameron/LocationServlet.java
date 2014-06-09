@@ -50,6 +50,7 @@ public class LocationServlet extends HttpServlet {
 				st.addLocation(latitude, longitude, name);
 				} catch (NumberFormatException e){
 					session.setAttribute("error", ErrorTypes.NOT_A_COORDINATE);
+					st.removeLocations();
 					RequestDispatcher dispatch = request.getRequestDispatcher("location.jsp");
 					dispatch.forward(request, response);
 					return;

@@ -111,7 +111,6 @@ public class Story {
 				coords.add(l);
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -237,10 +236,10 @@ public class Story {
 			query= findStoriesForDay(searchTerm);
 		}
 		if(criterion.equals("teller")){
-			query= "Select storyID from Stories where storyteller=" + searchTerm + ";";
+			query= "Select storyID from Stories where storyteller=\"" + searchTerm + "\";";
 		}
 		if(criterion.equals("location")){
-			query= "Select storyID from Locations where locationID in (selecct locationID from Points where name like '%" + searchTerm + "%');";
+			query= "Select storyID from Locations where locationID in (select locationID from Points where name like '%" + searchTerm + "%');";
 		}
 		if (query == null) return result;
 		System.out.println(query);
@@ -253,9 +252,6 @@ public class Story {
 		}catch (SQLException e){
 			return result;
 		}
-		
-		//search db with query
-		//return story ids that match search
 		return result;
 	}
 	

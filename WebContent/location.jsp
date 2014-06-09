@@ -26,10 +26,20 @@ Select the next Location for the story from <%=st.getStoryteller() %> on Giorno 
 String num= (String)session.getAttribute("numLocations");
 int locs= Integer.parseInt(num);
 for(int i=0; i < locs; i++){
+	String variableName= "name" + i;
+	String variableLat= "lat" + i;
+	String variableLon= "lon" + i;
+	String previousValueName= request.getParameter(variableName);
+	String previousValueLat= request.getParameter(variableLat);
+	String previousValueLon= request.getParameter(variableLon);
+	if(previousValueName != null){
 	%>
-Location Name:<input type="text" name="name<%=i%>"> Latitude:<input type="text" name="lat<%=i%>"> Longitude: <input type="text" name="lon<%=i%>"> <br>  
+	Location Name:<input type="text" name=<%=variableName%> value=<%=previousValueName%>> Latitude:<input type="text" name=<%=variableLat%> value=<%=previousValueLat%>> Longitude: <input type="text" name=<%=variableLon%> value=<%=previousValueLon%>> <br>  
+<% } else{ %>	
+Location Name:<input type="text" name=<%=variableName%>> Latitude:<input type="text" name=<%=variableLat%>> Longitude: <input type="text" name=<%=variableLon%>> <br>   
 
 <% }
+}	
 %>
 <input type="submit" value="Preview Map">
 </form>

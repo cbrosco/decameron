@@ -17,6 +17,7 @@ public class Story {
 	
 	public static final int NA = 20;
 	public static final int ALL = -1;
+	public static final int MULTI_STORY= 34;
 	
 	
   // CREATING/EDITING STORY OBJECT
@@ -98,7 +99,6 @@ public class Story {
 				st.executeUpdate(query);
 				String query2= "Insert into Locations values(" + this.id + ", LAST_INSERT_ID(), " + (i+1) + ");";
 				st.executeUpdate(query2);
-				System.out.println(query2);
 			}catch(SQLException e){
 				return false;
 			}
@@ -114,11 +114,14 @@ public class Story {
 	 * Constructor that gets story from DB by unique id
 	 */
 	public Story(int id){
+		createSingleStory(id);
+	}
+	
+	private void createSingleStory(int id){
 		this.id= id;
 		isMultiple= false;
 		coords= new ArrayList<Location>();
 		String query= "Select * from Stories where storyID=" + id + ";";
-		System.out.println(query);
 		Statement st= MyDBAccess.getStatement();
 		try{
 			ResultSet rs= st.executeQuery(query);
@@ -134,13 +137,14 @@ public class Story {
 			
 		}
 	
-		getLocationsFromDB();
+		getLocationsFromDB(this.id);
 	}
 	
 	/*
 	 * Constructor that gets story from DB by giorno and teller/number
 	 * either can be the option "all"(for int values, -1 means all)
 	 * teller or number may be "N/A"
+	 * Sets this.id to error value if story not found
 	 */
 	public Story(int giorno, String teller, int number){
 		this.storyteller= teller;
@@ -151,31 +155,68 @@ public class Story {
 		if(teller.equals("all") || teller.equals("N/A")){
 			if(number == NA || number == ALL){
 				isMultiple= true;
-				query= "Select * from Stories where giorno=" + number + ";";
-			}	
-		}
-		if(giorno == -1) {
-			if(isMultiple){
-				query= "Select * from Stories;";
+				query= "Select storyID from Stories where giorno=" + giorno + ";";
+				this.number= ALL; 			//For display, "all" is better than "N/A"
+				this.storyteller= "all";	//For display, "all" is better than "N/A"
+				if(giorno == ALL) {
+					query= "Select * from Stories;";
+				}
+			}else{
+				if(giorno == ALL) {
+					isMultiple= true;
+					this.storyteller= "all";	//For display, "all" is better than "N/A"
+					query= "Select storyID from Stories where storyNumber=" + number + ";";
+				}else{
+					query= "Select storyID from Stories where giorno=" + giorno + " and storyNumber=" + number + ";";
+				}
 			}
-			isMultiple = true;
-			
+		} else{
+			if(giorno == ALL) {
+				isMultiple= true;
+				query= "Select storyID from Stories where storyteller=\"" + teller + "\";";
+				this.number= ALL;		//Story teller take precedence over number
+			}else{
+				query= "Select storyID from Stories where giorno=" + giorno + " and storyteller=\"" + teller + "\";";
+			}
 		}
+		if(isMultiple) this.id= MULTI_STORY;
 		coords= new ArrayList<Location>();
-		
-		//get from DB dont forget locations (can call add Location)
-		
-		
+		Statement st= MyDBAccess.getStatement();
+		try{
+			ResultSet rs= st.executeQuery(query);
+			if(!rs.next()){
+				this.id= ErrorTypes.STORY_NOT_YET_CREATED;
+				return;
+			} else{
+				if(isMultiple){
+					ArrayList<Integer> storyIDs= new ArrayList<Integer>();
+					int idToPass= rs.getInt(1);
+					storyIDs.add(idToPass);
+					while(rs.next()){
+						idToPass= rs.getInt(1);
+						storyIDs.add(idToPass);
+					}
+					for(int i=0; i<storyIDs.size(); i++){
+						getLocationsFromDB(storyIDs.get(i));
+					}	
+				}else{
+					int idToPass= rs.getInt(1);
+					createSingleStory(idToPass);	
+				}
+			}
+		}catch(SQLException e){
+			this.id= ErrorTypes.STORY_NOT_YET_CREATED;
+			e.printStackTrace();
+		}		
 	}
 	
 	
 	/**
-	 * Gets locations of story from the DB
-	 * NB Uses the id property of story to find the locations for the story
+	 * Gets locations of story from the DB and add to coords field
+	 * 
 	 */
-	private void getLocationsFromDB(){
-		String query= "Select * from Locations where storyID=" + this.id + " order by indx;";
-		System.out.println(query);
+	private void getLocationsFromDB(int storyID){
+		String query= "Select * from Locations where storyID=" + storyID + " order by indx;";
 		Statement st= MyDBAccess.getStatement();
 		ArrayList<Integer> locationIds= new ArrayList<Integer>();
 		try {
@@ -191,11 +232,6 @@ public class Story {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
-		for(int i=0; i< coords.size(); i++){
-			System.out.println(coords.get(i));
-		}
-		
 	}
 	
 	
@@ -263,7 +299,6 @@ public class Story {
 			query= "Select distinct(storyID) from Locations where locationID in (select locationID from Points where name like '%" + searchTerm + "%');";
 		}
 		if (query == null) return result;
-		System.out.println(query);
 		Statement st= MyDBAccess.getStatement();
 		try{
 			ResultSet rs= st.executeQuery(query);

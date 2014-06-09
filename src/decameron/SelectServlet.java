@@ -36,15 +36,25 @@ public class SelectServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		int giorno =-1;
+		HttpSession session = request.getSession(true);
+		int giorno =Story.ALL;
 		int number= Story.NA;		//if "N/A" selected
 		if(!request.getParameter("giorno").equals("all")) giorno = Integer.parseInt(request.getParameter("giorno"));
 		if(request.getParameter("number").equals("all")){
-			number= -1;
+			number= Story.ALL;
 		}else if(!request.getParameter("number").equals("N/A")){
-			number = Integer.parseInt(request.getParameter("giorno"));
+			number = Integer.parseInt(request.getParameter("number"));
 		}
+		System.out.println("giorno = " + giorno);
+		System.out.println("number = " + number);
+		System.out.println("teller = " + request.getParameter("teller"));
 		Story st= new Story(giorno, request.getParameter("teller"), number);
+		if(st.getID() == ErrorTypes.STORY_NOT_YET_CREATED){
+			RequestDispatcher dispatch = request.getRequestDispatcher("noStory.jsp");
+			dispatch.forward(request, response);
+			return;
+		}
+		session.setAttribute("story", st);
 		RequestDispatcher dispatch = request.getRequestDispatcher("mapAndInfo.jsp?storyID=" +st.getID());
 		dispatch.forward(request, response);
 	}

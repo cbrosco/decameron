@@ -20,7 +20,7 @@ public class MyDBAccess {
 			connection = DriverManager.getConnection
 				( "jdbc:mysql://" + server, account ,password);
 			Statement stmt = connection.createStatement();
-			 System.out.println("Connected to " + server + " with " + account);
+		//	 System.out.println("Connected to " + server + " with " + account);
 			stmt.executeQuery("USE " + database);
 		} catch (SQLException e) {
 			e.printStackTrace();

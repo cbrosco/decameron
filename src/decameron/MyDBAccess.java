@@ -13,23 +13,6 @@ public class MyDBAccess {
 	
 	private static Connection connection;
 	private static Statement statement = null;
-
-	public static void main(String[] args){
-		Statement stat = MyDBAccess.getStatement();
-		try {
-            stat.executeQuery("select * from UsersDec;");
-		}
-		catch (SQLException sqle) {
-			System.out.println("SQL error 1 -->" + sqle.getMessage());
-		}
-		
-		try {
-            stat.executeQuery("select * from usersNotExist;");
-		}
-		catch (SQLException sqle) {
-			System.out.println("SQL error 2 -->" + sqle.getMessage());
-		}
-	}
 	
 	static {
 		try {

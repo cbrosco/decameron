@@ -1,6 +1,9 @@
 package decameron;
 
 import java.util.ArrayList;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public class Story {
 	private int id;
@@ -38,6 +41,7 @@ public class Story {
 		isMultiple= false;
 		coords= new ArrayList<Location>();
 		//get from DB dont forget locations (can call add Location)
+		getLocationsFromDB();
 	}
 	
 	/*
@@ -67,11 +71,26 @@ public class Story {
 		coords= new ArrayList<Location>();
 		
 		//get from DB dont forget locations (can call add Location)
+		
+		
 	}
 	
+	
+	/**
+	 * NB Uses the id property of story to find the locations for the story
+	 */
 	private void getLocationsFromDB(){
-		String query= "Select * from Locations where storyID=" + this.id + ";";
-		
+		String query= "Select * from Locations where storyID=" + this.id + "order by indx;";
+		Statement st= MyDBAccess.getStatement();
+		try {
+			ResultSet rs= st.executeQuery(query);
+			while(rs.next()){
+				
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 	
@@ -89,9 +108,39 @@ public class Story {
 	 * @return true if story successfully added, otherwise false
 	 */
 	public boolean addStoryToDB(){
-		//add something to RAHUL db
-		
-		return true;
+		String query= "Insert into Stories values(null, " + giorno + ", " + number + ", \"" + storyteller + "\", \"" + regina + "\", \"" + info + "\");";
+		System.out.println(query);
+		Statement st= MyDBAccess.getStatement();
+		this.id= -1;
+		try{
+			st.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
+		}catch(SQLException sqle){
+			return false;
+		}
+		try {
+			ResultSet rs = st.getGeneratedKeys();
+			if(rs.next()){
+				this.id= rs.getInt(1);
+			}else {
+				return false;
+			}
+		} catch (SQLException e) {
+			return false;
+		}
+		for(int i=0; i < coords.size(); i++){
+			Location l= coords.get(i);
+			query= "Insert into Points values(null, \"" + l.getName() + "\", "+ l.getLong() + ", " + l.getLat() + ");";
+			System.out.println(query);
+			try{
+				st.executeUpdate(query);
+				String query2= "Insert into Locations values(" + this.id + ", LAST_INSERT_ID(), " + i+1 + ");";
+				st.executeUpdate(query2);
+				System.out.println(query2);
+			}catch(SQLException e){
+				return false;
+			}
+		}	
+		return true;	
 	}
 	
 	public int getNumber(){

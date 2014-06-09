@@ -139,26 +139,90 @@ public class Story {
 		
 	}
 /**
- *  Searched the db for stories that match the search term based on the criterion
+ *  Searched the db for stories that match the search term based on the criterion.
+ *  NB. If the search criterion is location, stories with multiple location matches only
+ *  returned once
  * @param searchTerm user entered word. See if any values in db are like this word
  * @param criterion the field to search. can be "giorno", "teller" or "location"
- * @return an ArrayList of the unique ids for all storied matching the criteria
+ * @return an ArrayList of the unique ids for all stories matching the criteria
  */
 	public static ArrayList<Integer> getMaps(String searchTerm, String criterion) {
 		ArrayList<Integer> result= new ArrayList<Integer>();
+		searchTerm= searchTerm.trim();
+		if(searchTerm.isEmpty()) return result;
 		// TODO Auto-generated method stub
-		//search db based on search term
+		String query= "";
+		if(criterion.equals("giorno")){
+			query= findStoriesForDay(searchTerm);
+		}
+		if(criterion.equals("teller")){
+			query= "Select storyID from Stories where storyteller=" + searchTerm + ";";
+		}
+		if(criterion.equals("location")){
+			query= "Select storyID from Locations where locationID in (selecct locationID from Points where name like '%" + searchTerm + "%');";
+		}
+		if (query == null) return result;
+		
+		//search db with query
 		//return story ids that match search
 		return result;
 	}
 	
+	
+	/**
+	 * Create search query to search DB based on day entered by user
+	 * @param searchTerm
+	 * @return the query for the db, null if search is not valid
+	 */
+	private static String findStoriesForDay(String searchTerm) {
+		int day= -1;
+		try{
+			day= Integer.parseInt(searchTerm);
+			if(day < 1 || day > 10)return null;
+		}catch(NumberFormatException e) {
+			searchTerm= searchTerm.toLowerCase();
+			if(searchTerm.equals("one") ||searchTerm.equals("first")) day= 1;
+			if(searchTerm.equals("two") ||searchTerm.equals("second")) day= 2;
+			if(searchTerm.equals("three") ||searchTerm.equals("third"))day= 3; 
+			if(searchTerm.equals("four") ||searchTerm.equals("fourth")) day= 4; 
+			if(searchTerm.equals("five") ||searchTerm.equals("fifth")) day= 5; 
+			if(searchTerm.equals("six") ||searchTerm.equals("sixth")) day= 6;
+			if(searchTerm.equals("seventh") ||searchTerm.equals("seven")) day= 7; 
+			if(searchTerm.equals("eight") ||searchTerm.equals("eigth")) day= 8;
+			if(searchTerm.equals("ninth") ||searchTerm.equals("nine")) day= 9;
+			if(searchTerm.equals("ten") ||searchTerm.equals("tenth")) day= 10;
+		}
+		if(day== -1) return null;
+			
+		return "Select storyID from Stories where girono=" + day + ";"; 
+
+		}
+
 	/**
 	 * Find the location in this story that matches the term
-	 * Uh oh what if multiple stories match? May need different plan
+	 * Select location that is best match
 	 * @param term
 	 * @return
 	 */
 	public String getSimilarLocation(String term){
+		int maxNoCommonCharacters= 0;
+		term= term.toLowerCase();
+		for(int i=0; i< coords.size(); i++){
+			String loc= coords.get(i).getName();
+			loc= loc.toLowerCase();
+			if (loc.equals(term)) return loc;
+			if(loc.length() < maxNoCommonCharacters) continue;
+			int charInCommon= 0;
+			for(int j=0; j< loc.length(); j++){
+				if(loc.charAt(j) == term.charAt(charInCommon)){
+					charInCommon ++;
+				}else{
+					charInCommon = 0;
+				}
+			}
+			
+		}
+		
 		return "";
 	}
 

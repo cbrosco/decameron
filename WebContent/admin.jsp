@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+    <%@ page import= "decameron.*" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -9,7 +10,17 @@
 <body>
 <jsp:include page="toolbar.jsp"></jsp:include>
 <h1>Admin</h1>
+<% if(session.getAttribute("error") != null) {
+		if(session.getAttribute("error").equals(ErrorTypes.NOT_A_POSITIVE_INT)){
+			session.setAttribute("error", null);
+			%>
+			<p class= "errorMessage"> Error- Be sure to enter a positive number of locations </p>
+			<% 
+		}
+	}
+%>
 Enter data for a new map:
+
 <br>
 <form action="StoryCreationServlet" method="post">
 Day:
@@ -56,6 +67,12 @@ Story teller:
 <br>
 Extra info:<br>
 <textarea rows="4" cols="30" name= "extra">
+<% String alreadyEnteredinfo= request.getParameter("extra");
+if(alreadyEnteredinfo != null){
+%> <%=alreadyEnteredinfo%>	
+<%
+}
+%>
 </textarea>
 <br>
 How many locations will you be entering?
@@ -63,6 +80,9 @@ How many locations will you be entering?
 
 <input type="submit" value="Continue">
 </form>
+
+
+
 
 </body>
 </html>

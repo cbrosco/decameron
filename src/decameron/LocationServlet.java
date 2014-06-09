@@ -44,7 +44,16 @@ public class LocationServlet extends HttpServlet {
 			String lat= request.getParameter("lat" + i);
 			String lon= request.getParameter("lon" + i);
 			if(!name.isEmpty() && !lat.isEmpty() && !lon.isEmpty()){
-				st.addLocation(Double.parseDouble(lat), Double.parseDouble(lon), name);
+				try{
+				double latitude= Double.parseDouble(lat);
+				double longitude= Double.parseDouble(lon);
+				st.addLocation(latitude, longitude, name);
+				} catch (NumberFormatException e){
+					session.setAttribute("error", ErrorTypes.NOT_A_COORDINATE);
+					RequestDispatcher dispatch = request.getRequestDispatcher("location.jsp");
+					dispatch.forward(request, response);
+					return;
+				}
 			}
 		}
 		RequestDispatcher dispatch = request.getRequestDispatcher("mapPreview.jsp");

@@ -9,6 +9,15 @@
 </head>
 <body>
 <jsp:include page="toolbar.jsp"></jsp:include>
+<% if(session.getAttribute("error") != null) {
+		if(session.getAttribute("error").equals(ErrorTypes.NOT_A_COORDINATE)){
+			session.setAttribute("error", null);
+			%>
+			<p class= "errorMessage"> Error- Please enter decimal numbers for coordinates </p>
+			<% 
+		}
+	}
+%>
 <%Story st= (Story)session.getAttribute("story"); %>
 Select the next Location for the story from <%=st.getStoryteller() %> on Giorno <%=st.getGiorno() %>
 

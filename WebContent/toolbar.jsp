@@ -19,6 +19,10 @@ li {
     float: left;
 }
 
+p.errorMessage {
+    color: red;
+}
+
 a:link, a:visited {
     display: block;
     width: 120px;

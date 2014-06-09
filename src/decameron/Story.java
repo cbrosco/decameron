@@ -27,6 +27,7 @@ public class Story {
 		this.info= info; 
 		coords= new ArrayList<Location>();
 		isMultiple= false;
+		
 	}
 	
 	/*
@@ -64,7 +65,14 @@ public class Story {
 			
 		}
 		coords= new ArrayList<Location>();
+		
 		//get from DB dont forget locations (can call add Location)
+	}
+	
+	private void getLocationsFromDB(){
+		String query= "Select * from Locations where storyID=" + this.id + ";";
+		
+		
 	}
 	
 	public boolean isMulipleStoriesCombined(){

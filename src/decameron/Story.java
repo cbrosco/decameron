@@ -18,6 +18,10 @@ public class Story {
 	public static final int NA = 20;
 	public static final int ALL = -1;
 	
+	
+  // CREATING/EDITING STORY OBJECT
+	
+	
 	/*
 	 * Constructor based on user entering information, does not put in DB yet
 	 * Still to be done: add locations for story, add story to DB
@@ -32,6 +36,79 @@ public class Story {
 		isMultiple= false;
 		
 	}
+
+	
+	public void removeLocations(){
+		coords= new ArrayList<Location>();
+	}
+	
+	private String nameRegina(int giorno){
+		switch(giorno){
+			case 1: return "Pampinea";
+			case 2: return "Filomena";
+			case 3: return "Neifile";
+			case 4: return "Filostrato ";
+			case 5: return "Fiammetta";
+			case 6: return "Elissa";
+			case 7: return "Dioneo";
+			case 8: return "Lauretta";
+			case 9: return "Emilia";
+			case 10: return "Panfilo";
+		}
+		return "";
+	}
+
+	public void updateExtraInfo(String updatedVersion) {
+		this.info= updatedVersion;
+		
+	}
+	
+	public void addLocation(double lat, double lon, String name){
+		Location l= new Location(name, lon, lat);
+		coords.add(l);
+	}
+	
+	/**
+	 * Puts story and locations in DB
+	 * @return true if story successfully added, otherwise false
+	 */
+	public boolean addStoryToDB(){
+		String query= "Insert into Stories values(null, " + giorno + ", " + number + ", \"" + storyteller + "\", \"" + regina + "\", \"" + info + "\");";
+		Statement st= MyDBAccess.getStatement();
+		this.id= -1;
+		try{
+			st.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
+		}catch(SQLException sqle){
+			return false;
+		}
+		try {
+			ResultSet rs = st.getGeneratedKeys();
+			if(rs.next()){
+				this.id= rs.getInt(1);
+			}else {
+				return false;
+			}
+		} catch (SQLException e) {
+			return false;
+		}
+		for(int i=0; i < coords.size(); i++){
+			Location l= coords.get(i);
+			query= "Insert into Points values(null, \"" + l.getName() + "\", "+ l.getLong() + ", " + l.getLat() + ");";
+			try{
+				st.executeUpdate(query);
+				String query2= "Insert into Locations values(" + this.id + ", LAST_INSERT_ID(), " + (i+1) + ");";
+				st.executeUpdate(query2);
+				System.out.println(query2);
+			}catch(SQLException e){
+				return false;
+			}
+		}	
+		return true;	
+	}
+	
+	
+	//GETTING STORY FROM DB
+	
 	
 	/*
 	 * Constructor that gets story from DB by unique id
@@ -93,6 +170,7 @@ public class Story {
 	
 	
 	/**
+	 * Gets locations of story from the DB
 	 * NB Uses the id property of story to find the locations for the story
 	 */
 	private void getLocationsFromDB(){
@@ -120,52 +198,8 @@ public class Story {
 		
 	}
 	
-	public boolean isMulipleStoriesCombined(){
-		return isMultiple;
-	}
 	
-	public void addLocation(double lat, double lon, String name){
-		Location l= new Location(name, lon, lat);
-		coords.add(l);
-	}
-	
-	/**
-	 * Puts story and locations in DB
-	 * @return true if story successfully added, otherwise false
-	 */
-	public boolean addStoryToDB(){
-		String query= "Insert into Stories values(null, " + giorno + ", " + number + ", \"" + storyteller + "\", \"" + regina + "\", \"" + info + "\");";
-		Statement st= MyDBAccess.getStatement();
-		this.id= -1;
-		try{
-			st.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
-		}catch(SQLException sqle){
-			return false;
-		}
-		try {
-			ResultSet rs = st.getGeneratedKeys();
-			if(rs.next()){
-				this.id= rs.getInt(1);
-			}else {
-				return false;
-			}
-		} catch (SQLException e) {
-			return false;
-		}
-		for(int i=0; i < coords.size(); i++){
-			Location l= coords.get(i);
-			query= "Insert into Points values(null, \"" + l.getName() + "\", "+ l.getLong() + ", " + l.getLat() + ");";
-			try{
-				st.executeUpdate(query);
-				String query2= "Insert into Locations values(" + this.id + ", LAST_INSERT_ID(), " + (i+1) + ");";
-				st.executeUpdate(query2);
-				System.out.println(query2);
-			}catch(SQLException e){
-				return false;
-			}
-		}	
-		return true;	
-	}
+	// GETTERS -- FOR OUTSIDERS TO INTERACT WITH SPECIFIC STORY FIELDS
 	
 	public int getNumber(){
 		return number;
@@ -195,30 +229,17 @@ public class Story {
 		return coords.size();
 	}
 	
-	public void removeLocations(){
-		coords= new ArrayList<Location>();
+	public boolean isMulipleStoriesCombined(){
+		return isMultiple;
 	}
 	
-	private String nameRegina(int giorno){
-		switch(giorno){
-			case 1: return "Pampinea";
-			case 2: return "Filomena";
-			case 3: return "Neifile";
-			case 4: return "Filostrato ";
-			case 5: return "Fiammetta";
-			case 6: return "Elissa";
-			case 7: return "Dioneo";
-			case 8: return "Lauretta";
-			case 9: return "Emilia";
-			case 10: return "Panfilo";
-		}
-		return "";
+	public int getID() {
+		return this.id;
 	}
 
-	public void updateExtraInfo(String updatedVersion) {
-		this.info= updatedVersion;
-		
-	}
+	
+	// STATIC FUNCTIONS FOR SEARCHING DB
+
 /**
  *  Searched the db for stories that match the search term based on the criterion.
  *  NB. If the search criterion is location, stories with multiple location matches only
@@ -239,7 +260,7 @@ public class Story {
 			query= "Select storyID from Stories where storyteller=\"" + searchTerm + "\";";
 		}
 		if(criterion.equals("location")){
-			query= "Select storyID from Locations where locationID in (select locationID from Points where name like '%" + searchTerm + "%');";
+			query= "Select distinct(storyID) from Locations where locationID in (select locationID from Points where name like '%" + searchTerm + "%');";
 		}
 		if (query == null) return result;
 		System.out.println(query);
@@ -285,36 +306,30 @@ public class Story {
 
 		}
 
+	
+	//USED FOR SEARCH RESULTS
+	
 	/**
 	 * Find the location in this story that matches the term
-	 * Select location that is best match
-	 * @param term
-	 * @return
+	 * Currently just looks for a location name that has term as a substring
+	 * @param term the term that the user searched for
+	 * @return the location name that contains this term
 	 */
 	public String getSimilarLocation(String term){
-		int maxNoCommonCharacters= 0;
 		term= term.toLowerCase();
+		int termLen= term.length();
 		for(int i=0; i< coords.size(); i++){
 			String loc= coords.get(i).getName();
 			loc= loc.toLowerCase();
 			if (loc.equals(term)) return loc;
-			if(loc.length() < maxNoCommonCharacters) continue;
-			int charInCommon= 0;
-			for(int j=0; j< loc.length(); j++){
-				if(loc.charAt(j) == term.charAt(charInCommon)){
-					charInCommon ++;
-				}else{
-					charInCommon = 0;
-				}
+			if(loc.length() < termLen) continue;
+			for(int j=0; j<= (loc.length()- termLen); j++){
+				String temp= loc.substring(j, j+termLen);
+				if(temp.equals(term)) return loc;
 			}
-			
 		}
-		
 		return "";
 	}
 
-	public int getID() {
-
-		return this.id;
-	}
+	
 }

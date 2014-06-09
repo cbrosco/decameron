@@ -9,6 +9,7 @@
 </head>
 <body>
 <jsp:include page="toolbar.jsp"></jsp:include>
+<div class="container">
 <h1>Admin</h1>
 <% if(session.getAttribute("error") != null) {
 		if(session.getAttribute("error").equals(ErrorTypes.NOT_A_POSITIVE_INT)){
@@ -66,7 +67,7 @@ Story teller:
 </select>
 <br>
 Extra info:<br>
-<textarea rows="4" cols="30" name= "extra">
+<textarea rows="2" cols="60" name= "extra">
 <% String alreadyEnteredinfo= request.getParameter("extra");
 if(alreadyEnteredinfo != null){
 %> <%=alreadyEnteredinfo%>	
@@ -78,11 +79,11 @@ if(alreadyEnteredinfo != null){
 How many locations will you be entering?
 <input type="text" name="numberOfLocs"><br>
 
-<input type="submit" value="Continue">
+<input type="submit" value="Continue" class="btn btn-default">
 </form>
 
 
 
-
+</div>
 </body>
 </html>

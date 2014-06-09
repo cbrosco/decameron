@@ -10,13 +10,14 @@
 </head>
 <body>
 <jsp:include page="toolbar.jsp"></jsp:include>
+<div class="container">
 <h1>Search</h1>
 <form action="SearchServlet" method="post">
 <input type="text" name="searchTerm">
  <input type="radio" name="searchType" value="giorno"> Day
  <input type="radio" name="searchType" value="teller"> Storyteller
  <input type="radio" name="searchType" value="location" checked> Location
- <input type="submit" value="Search">
+ <input type="submit" value="Search" class="btn btn-default">
 </form>
 <%ArrayList<Integer> storyIds= (ArrayList<Integer>)session.getAttribute("storyIds"); 
  int numResults= storyIds.size();
@@ -25,7 +26,7 @@
  if(searchType.equals("giorno")) searchType= "Day";
  if(searchType.equals("location")) searchType= "Location";
 %>
-Search for <%=searchType%> "<%=request.getParameter("searchTerm")%>" produced <%=numResults%> results
+Search for <%=searchType%> "<%=request.getParameter("searchTerm")%>" produced <%=numResults%> results <br>
 
 <%for(int i=0; i< storyIds.size(); i++) {
 	Story s= new Story(storyIds.get(i));
@@ -33,14 +34,14 @@ Search for <%=searchType%> "<%=request.getParameter("searchTerm")%>" produced <%
 	if(searchType.equals("Location")){
 		String location= s.getSimilarLocation(request.getParameter("searchTerm"));
 %>
-<a class="results" href=<%=link %>>Day <%=s.getGiorno()%> Story <%=s.getNumber()%> Location <%=location%> </a>
+<a class="results" href=<%=link %>>Day <%=s.getGiorno()%> Story <%=s.getNumber()%> Location:  <%=location%> </a> <br>
 
 <% }else{%>
 <a class="results" href=<%=link %>>Day <%=s.getGiorno()%> Story <%=s.getNumber()%> StoryTeller <%=s.getStoryteller() %> </a>
-
+<br>
 <%}
 }%>
 
-
+</div>
 </body>
 </html>

@@ -2,7 +2,7 @@
     pageEncoding="ISO-8859-1"%>
         <%@ page import= "decameron.*" %>
     <%@ page import= "java.util.ArrayList" %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -12,6 +12,7 @@
 </head>
 <body>
 <jsp:include page="toolbar.jsp"></jsp:include>
+<div class="container">
 <h1> Select</h1>
 <form action="SelectServlet" method="post">
 Day:
@@ -58,7 +59,7 @@ Story Number:
 <option value="9">9</option>
 <option value="10">10</option>
 </select>
-<input type="submit" value="Select">
+<input type="submit" value="Select" class="btn btn-default">
 </form>
 <%Story st= (Story)session.getAttribute("story"); 
 %>
@@ -68,6 +69,7 @@ Day: <%=st.getGiorno()%> Storyteller: <%=st.getStoryteller() %> Number<%=st.getN
 Ruler: <%=st.getRegina() %><br>
 Extra Info: <%=st.getExtraInfo() %>
 <%} %>
+</div>
 <div id="map-canvas">
 </div>
 

@@ -45,9 +45,6 @@ public class SelectServlet extends HttpServlet {
 		}else if(!request.getParameter("number").equals("N/A")){
 			number = Integer.parseInt(request.getParameter("number"));
 		}
-		System.out.println("giorno = " + giorno);
-		System.out.println("number = " + number);
-		System.out.println("teller = " + request.getParameter("teller"));
 		Story st= new Story(giorno, request.getParameter("teller"), number);
 		if(st.getID() == ErrorTypes.STORY_NOT_YET_CREATED){
 			RequestDispatcher dispatch = request.getRequestDispatcher("noStory.jsp");

@@ -17,6 +17,7 @@
 ArrayList<Location> locs= st.getLocations();
 int numLocs= locs.size();
 %>
+<div class="container">
 Day <%=st.getGiorno() %> Story <%=st.getNumber()%> <br> 
 Storyteller: <%=st.getStoryteller()%><br>
 Ruler: <%=st.getRegina() %><br>
@@ -32,15 +33,17 @@ Locations: <br>
 for(int i=0; i < numLocs; i++ ){ %>
 <%=i+1%>: <input type="text" name="name<%=i%>" value=<%=locs.get(i).getName()%>> Latitude:<input type="text" name="lat<%=i%>" value=<%=locs.get(i).getLat()%>> Longitude: <input type="text" name="lon<%=i%>" value=<%=locs.get(i).getLong()%>> <br>
 <% } %>
-<input type="submit" value="Update Locations">
+<input type="submit" value="Update Locations" class="btn btn-default">
 </form>
+<form action="SaveMapServlet" id= "saving" method="post">
+<input type="submit" value="Save Map" class="btn btn-primary">
+</form>
+</div>
 </div>
 <div id="map-canvas">
 </div>
 
 
-<form action="SaveMapServlet" id= "saving" method="post">
-<input type="submit" value="Save Map">
-</form>
+
 </body>
 </html>

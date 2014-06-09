@@ -9,6 +9,7 @@
 </head>
 <body>
 <jsp:include page="toolbar.jsp"></jsp:include>
+<div class="container">
 <% if(session.getAttribute("error") != null) {
 		if(session.getAttribute("error").equals(ErrorTypes.NOT_A_COORDINATE)){
 			session.setAttribute("error", null);
@@ -41,7 +42,8 @@ Location Name:<input type="text" name=<%=variableName%>> Latitude:<input type="t
 <% }
 }	
 %>
-<input type="submit" value="Preview Map">
+<input type="submit" value="Preview Map" class="btn btn-default">
 </form>
+</div>
 </body>
 </html>

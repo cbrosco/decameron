@@ -8,6 +8,8 @@
 </head>
 <body>
 <jsp:include page="toolbar.jsp"></jsp:include>
+<div class="container">
 I am sorry your story was missing a field and could not save. 
+</div>
 </body>
 </html>

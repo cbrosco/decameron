@@ -8,8 +8,9 @@
 </head>
 <body>
 <jsp:include page="toolbar.jsp"></jsp:include>
-
+<div class="container">
 Sorry, that story has not yet been entered
+</div>
 </body>
 
 </html>

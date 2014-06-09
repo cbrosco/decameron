@@ -21,10 +21,11 @@ if (storyID != Story.MULTI_STORY){
 </head>
 <body>
 <jsp:include page="toolbar.jsp"></jsp:include>
+<div class="container">
 <%if(st.getGiorno() != Story.ALL) {%>
 	Day <%=st.getGiorno() %>  
 <%} else{ %>
-	All Days 
+	All Days, 
 <%} %>
 <%if(st.getNumber() != Story.ALL) {%>
 	 Story <%=st.getNumber()%> <br>
@@ -36,6 +37,7 @@ Storyteller: <%=st.getStoryteller()%><br>
 Ruler: <%=st.getRegina() %><br>
 Extra Info: <%=st.getExtraInfo() %>
 <%} %>
+</div>
 <div id="map-canvas">
 </div>
 <%session.setAttribute("story", null); %>

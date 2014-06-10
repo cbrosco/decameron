@@ -293,7 +293,7 @@ public class Story {
 			query= findStoriesForDay(searchTerm);
 		}
 		if(criterion.equals("teller")){
-			query= "Select storyID from Stories where storyteller=\"" + searchTerm + "\";";
+			query= "Select storyID from Stories where storyteller=\"" + searchTerm + "\" order by giorno;";
 		}
 		if(criterion.equals("location")){
 			query= "Select distinct(storyID) from Locations where locationID in (select locationID from Points where name like '%" + searchTerm + "%');";
@@ -337,7 +337,7 @@ public class Story {
 		}
 		if(day== -1) return null;
 			
-		return "Select storyID from Stories where giorno=" + day + ";"; 
+		return "Select storyID from Stories where giorno=" + day + " order by storyNumber;"; 
 
 		}
 

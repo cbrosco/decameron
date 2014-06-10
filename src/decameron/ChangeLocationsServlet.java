@@ -38,6 +38,7 @@ public class ChangeLocationsServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession(true);
 		Story st= (Story)session.getAttribute("story");
+		st.updateExtraInfo(request.getParameter("extra"));
 		int locs= st.getNumberLocations();
 		st.removeLocations();
 		for(int i=0; i< locs; i++){

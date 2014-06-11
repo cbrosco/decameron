@@ -35,10 +35,11 @@ for(int i=0; i < numLocs; i++ ){ %>
 <% } %>
 <input type="submit" value="Update Locations" class="btn btn-default">
 </form>
+</div>
 <form action="SaveMapServlet" id= "saving" method="post">
 <input type="submit" value="Save Map" class="btn btn-primary">
 </form>
-</div>
+
 </div>
 <div id="map-canvas">
 </div>

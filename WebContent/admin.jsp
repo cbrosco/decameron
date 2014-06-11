@@ -10,7 +10,7 @@
 <body>
 <jsp:include page="toolbar.jsp"></jsp:include>
 <div class="container">
-<h1>Admin</h1>
+<h1>Create Map</h1>
 <% if(session.getAttribute("error") != null) {
 		if(session.getAttribute("error").equals(ErrorTypes.NOT_A_POSITIVE_INT)){
 			session.setAttribute("error", null);

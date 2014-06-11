@@ -10,6 +10,7 @@
 <body>
 <jsp:include page="toolbar.jsp"></jsp:include>
 <div class="container">
+<h1>Sign In</h1>
 <% String mapId= request.getParameter("mapToDelete");
 if(mapId != null){ %>
 <p class= "errorMessage"> Please sign in. Only Admin have deleting privileges </p>

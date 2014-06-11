@@ -67,7 +67,13 @@ public class Users {
 	}
 
 	
-
+	public String getName(){
+		return name;
+	}
+	
+	public int getId(){
+		return userId;
+	}
 
 
 	public boolean isAdmin(){

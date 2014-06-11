@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Administration</title>
+<title>Create Map</title>
 </head>
 <body>
 <jsp:include page="toolbar.jsp"></jsp:include>

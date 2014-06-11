@@ -26,7 +26,7 @@ if(mapId != null){ %>
 
 <form action="LoginServlet" method="post">
 			Username: <input type="text" name="username"><br>
-			Password: <input type="text" name="password"><br>
+			Password: <input type="password" name="password"><br>
 			<input type="submit" value="Login" class="btn btn-primary">
 			<%if(mapId != null){ %>
 			<input type=hidden name="mapToDelete" value=<%=mapId%>>

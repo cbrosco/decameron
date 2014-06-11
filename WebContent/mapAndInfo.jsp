@@ -41,6 +41,26 @@ Extra Info: <%=st.getExtraInfo() %>
 <div id="map-canvas">
 </div>
 <%session.setAttribute("story", null); %>
+<%	Users usr = (Users)session.getAttribute("user"); 
+	if(usr == null){ %>
+		<form action="signIn.jsp" method="post">
+		<input type="submit" value="Delete Map" class="btn btn-danger btn-sm">
+		<input type=hidden name="mapToDelete" value=<%=storyID%> >
+		</form> <%
+	}
+	else{
+		boolean isAdmin= usr.isAdmin();
+		if(isAdmin){
+			%>
+			<form action="DeleteMapServlet" method="post">
+			<input type="submit" value="Delete Map" class="btn btn-danger btn-sm">
+			<input type=hidden name="mapToDelete" value=<%=storyID%> >
+			</form>
+			<%	
+		}
+	}
+%>
+
 
 </body>
 </html>

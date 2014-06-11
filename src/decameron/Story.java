@@ -80,6 +80,7 @@ public class Story {
 		try{
 			st.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
 		}catch(SQLException sqle){
+			System.out.println(query);
 			return false;
 		}
 		try {
@@ -100,15 +101,33 @@ public class Story {
 				String query2= "Insert into Locations values(" + this.id + ", LAST_INSERT_ID(), " + (i+1) + ");";
 				st.executeUpdate(query2);
 			}catch(SQLException e){
+				System.out.println(query);
+				
 				return false;
 			}
 		}	
 		return true;	
 	}
 	
+	public boolean deleteStory(){
+		String query= "Delete from Stories where storyID=" + id + ";";
+		String query2= "Delete from Locations where storyID=" + id + ";";
+		Statement st= MyDBAccess.getStatement();
+		try{
+			int two= st.executeUpdate(query2);
+			int one= st.executeUpdate(query);
+			if(one <= 0) return false;
+		}catch(SQLException e){
+			System.out.println(query);
+			System.out.println(query2);
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+	
 	
 	//GETTING STORY FROM DB
-	
 	
 	/*
 	 * Constructor that gets story from DB by unique id
@@ -134,7 +153,7 @@ public class Story {
 			}
 			
 		}catch(SQLException e){
-			
+			System.out.println(query);
 		}
 	
 		getLocationsFromDB(this.id);
@@ -206,6 +225,7 @@ public class Story {
 			}
 		}catch(SQLException e){
 			this.id= ErrorTypes.STORY_NOT_YET_CREATED;
+			System.out.println(query);
 			e.printStackTrace();
 		}		
 	}
@@ -230,6 +250,7 @@ public class Story {
 				coords.add(l);
 			}
 		} catch (SQLException e) {
+			System.out.println(query);
 			e.printStackTrace();
 		}
 	}
@@ -306,6 +327,7 @@ public class Story {
 				result.add(rs.getInt(1));
 			}
 		}catch (SQLException e){
+			System.out.println(query);
 			return result;
 		}
 		return result;

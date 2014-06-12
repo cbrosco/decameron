@@ -1,5 +1,7 @@
 package decameron;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -43,7 +45,7 @@ public class Users {
 	 */
 	public Users(String name, String password, boolean isAdmin) {
 		this.name= name;
-		this.password= password; // hash password
+		this.password= getHash(password); // hash password
 		this.isAdmin= isAdmin;
 		
 		String query= "Insert into UsersDec values (null, \"" + name + "\", \"" + this.password + "\", " + isAdmin + ");"; 
@@ -88,7 +90,7 @@ public class Users {
 	 */
 	public static int validateCredentials(String username, String password) {
 		if(username.isEmpty() || password.isEmpty()) return -1;
-		String hashedPassword= password;
+		String hashedPassword= getHash(password);
 		//hash password
 		String query = "Select userID from UsersDec where username= \"" + username + "\" and password =\"" + hashedPassword + "\";"; 
 		Statement st= MyDBAccess.getStatement();
@@ -105,6 +107,38 @@ public class Users {
 			e.printStackTrace();
 			return -1;
 		}
+	}
+	
+	
+	private static String getHash(String password){
+		String result= "";
+		try {
+			MessageDigest md= MessageDigest.getInstance("SHA");
+			md.update(password.getBytes());
+			result= hexToString(md.digest());
+		
+			
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+	
+	/*
+	 Given a byte[] array, produces a hex String,
+	 such as "234a6f". with 2 chars for each byte in the array.
+	 (provided code from CS 108 Patrick Young)
+	*/
+	private static String hexToString(byte[] bytes) {
+		StringBuffer buff = new StringBuffer();
+		for (int i=0; i<bytes.length; i++) {
+			int val = bytes[i];
+			val = val & 0xff;  // remove higher bits, sign
+			if (val<16) buff.append('0'); // leading 0
+			buff.append(Integer.toString(val, 16));
+		}
+		return buff.toString();
 	}
 		
 		

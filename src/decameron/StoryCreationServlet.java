@@ -36,10 +36,9 @@ public class StoryCreationServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		int noLocations= 0;
 		HttpSession session = request.getSession(true);
 		try{
-			noLocations= Integer.parseInt(request.getParameter("numberOfLocs"));
+			Integer.parseInt(request.getParameter("numberOfLocs"));
 		}catch(NumberFormatException e) {
 			session.setAttribute("error", ErrorTypes.NOT_A_POSITIVE_INT);
 			RequestDispatcher dispatch = request.getRequestDispatcher("admin.jsp");

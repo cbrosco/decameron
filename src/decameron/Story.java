@@ -1,8 +1,6 @@
 package decameron;
 
 import java.util.ArrayList;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -116,7 +114,7 @@ public class Story {
 		String query2= "Delete from Locations where storyID=" + id + ";";
 		Statement st= MyDBAccess.getStatement();
 		try{
-			int two= st.executeUpdate(query2);
+			st.executeUpdate(query2);
 			int one= st.executeUpdate(query);
 			if(one <= 0) return false;
 		}catch(SQLException e){

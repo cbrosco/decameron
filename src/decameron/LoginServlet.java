@@ -46,6 +46,12 @@ public class LoginServlet extends HttpServlet {
 			Users usr= new Users(userId);
 			session.setAttribute("user", usr);
 			String mapId= request.getParameter("mapToDelete");
+			String tryingToSave= request.getParameter("saving");
+			if(tryingToSave != null){
+				RequestDispatcher dispatch = request.getRequestDispatcher("SaveMapServlet");
+				dispatch.forward(request, response);
+				return;	
+			}
 			if(mapId != null){
 				int map= Integer.parseInt(mapId);
 				if(map != Story.MULTI_STORY){

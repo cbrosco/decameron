@@ -12,9 +12,16 @@
 <div class="container">
 <h1>Sign In</h1>
 <% String mapId= request.getParameter("mapToDelete");
+	String tryingToSave= request.getParameter("saving");
 if(mapId != null){ %>
-<p class= "errorMessage"> Please sign in. Only Admin have deleting privileges </p>
+<p class= "errorMessage"> Please sign in. Only Admin have deleting privileges</p>
 <%} %>
+<%
+if(tryingToSave != null){ %>
+<p class= "errorMessage"> Please sign in. Only members can permanently save a story</p>
+<%} %>
+
+
 <% if(session.getAttribute("error") != null) {
 		if(session.getAttribute("error").equals(ErrorTypes.INVALID_USER)){
 			session.setAttribute("error", null);
@@ -31,6 +38,9 @@ if(mapId != null){ %>
 			<input type="submit" value="Login" class="btn btn-primary">
 			<%if(mapId != null){ %>
 			<input type=hidden name="mapToDelete" value=<%=mapId%>>
+			<% } %>
+			<%if(tryingToSave != null){ %>
+			<input type=hidden name="saving" value="saving">
 			<% } %>
 			</form>
 </div>

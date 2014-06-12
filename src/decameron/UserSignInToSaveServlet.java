@@ -11,16 +11,16 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
- * Servlet implementation class SaveMapServlet
+ * Servlet implementation class UserSignInToSaveServlet
  */
-@WebServlet("/SaveMapServlet")
-public class SaveMapServlet extends HttpServlet {
+@WebServlet("/UserSignInToSaveServlet")
+public class UserSignInToSaveServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public SaveMapServlet() {
+    public UserSignInToSaveServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -38,21 +38,9 @@ public class SaveMapServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession(true);
 		Story st= (Story)session.getAttribute("story");
-		String extraInfo= request.getParameter("extra");
-		if(extraInfo != null){
-			st.updateExtraInfo(extraInfo);
-		}
-		boolean saved= st.addStoryToDB();
-		
-		if(saved){
-		RequestDispatcher dispatch = request.getRequestDispatcher("saveSuccessful.jsp");
+		st.updateExtraInfo(request.getParameter("extra"));
+		RequestDispatcher dispatch = request.getRequestDispatcher("signIn.jsp?saving=true");
 		dispatch.forward(request, response);
-		} else{
-			session.setAttribute("story", null);
-			RequestDispatcher dispatch = request.getRequestDispatcher("saveFailed.jsp");
-			dispatch.forward(request, response);
-		}
-		
 	}
 
 }
